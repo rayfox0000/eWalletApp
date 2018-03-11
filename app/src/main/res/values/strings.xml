@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">eWalletApp</string>
     <string name="action_settings">Settings</string>
-    <string name="email">Email Id</string>
+    <string name="username">Email Id</string>
     <string name="passowrd">Password</string>
     <string name="login">LOGIN</string>
     <string name="show_pwd">Show Password</string>

@@ -26,12 +26,15 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.hooch.ewalletapp.R;
+import com.example.hooch.ewalletapp.domain.LoginResponse;
+import com.example.hooch.ewalletapp.request.APIClient;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.io.IOException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class Login_Fragment extends Fragment implements OnClickListener {
@@ -153,23 +156,40 @@ public class Login_Fragment extends Fragment implements OnClickListener {
         String getEmailId = emailid.getText().toString();
         String getPassword = password.getText().toString();
 
-
-
-//        if (getEmailId.equals("") || getEmailId.length() == 0
-//                || getPassword.equals("") || getPassword.length() == 0) {
-//            loginLayout.startAnimation(shakeAnimation);
-//            new CustomToast().Show_Toast(getActivity(), view,
-//                    "Enter both credentials.");
-//
-//        }
-//
-//        else if (!getEmailId.equals(""))
-//            new CustomToast().Show_Toast(getActivity(), view,
-//                    "Your Email Id is Invalid.");
-//        else{
-            Intent mainIntent = new Intent(getActivity(), MenuActivity.class);
-            startActivity(mainIntent);
-        }
-
-
+        if (getEmailId.trim().length() == 0 || getPassword.trim().length() == 0) {
+            loginLayout.startAnimation(shakeAnimation);
+            Utils.customToast(getActivity(), view, "Enter both credentials.");
+        } else if (getEmailId.equals(""))
+            Utils.customToast(getActivity(), view, "Your Email Id is Invalid.");
+        else
+            login(getEmailId, getPassword);
     }
+
+    private void login(String email, String password) {
+        Call<LoginResponse> tokenDetails = APIClient.userRequests.login(email, password);
+        tokenDetails.enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                if (response.isSuccessful()) {
+                    //TODO: Store token and user details into Shared Pref
+                    enterMain();
+                } else {
+                    try {
+                        Utils.customToast(getActivity(), view, response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                System.out.println(t);
+            }
+        });
+    }
+
+    private void enterMain() {
+        Intent mainIntent = new Intent(getActivity(), MenuActivity.class);
+        startActivity(mainIntent);
+    }
+}
