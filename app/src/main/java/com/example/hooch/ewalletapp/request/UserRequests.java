@@ -4,6 +4,7 @@ import com.example.hooch.ewalletapp.domain.LoginResponse;
 import com.example.hooch.ewalletapp.domain.User;
 
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -18,7 +19,7 @@ import retrofit2.http.POST;
 public interface UserRequests {
 
     @POST("/auth/signUp")
-    Call signUp(@Body User user);
+    Call<Void> signUp(@Body User user);
 
     @POST("/auth/login")
     @FormUrlEncoded

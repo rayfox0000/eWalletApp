@@ -144,14 +144,13 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
         User user = new User(getUserId,getPassword,getEmail,getFirstName,getLastName);
 //        Call<String> signUp = APIClient.userRequests.signUp(new User(getUserId,getPassword,getEmail,getFirstName,getLastName));
 //        Log.d("TST",getUserId + getPassword + getEmail + getFirstName + getLastName);
-        Call signUp = APIClient.userRequests.signUp(user);
+        Call<Void> signUp = APIClient.userRequests.signUp(user);
 //        Log.d("TEST","test");
-        signUp.enqueue(new Callback() {
+        signUp.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call call, Response response) {
-                if(response.isSuccessful()){
-                    Toast.makeText(getActivity(), "Please verify your account.", Toast.LENGTH_SHORT)
-                    .show();
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if(response.isSuccessful() && response.code() == 200){
+                    Utils.customToast(getActivity(), view, "Success");
                 }else{
                     try {
                         Utils.customToast(getActivity(), view, response.errorBody().string());
@@ -162,8 +161,8 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
             }
 
             @Override
-            public void onFailure(Call call, Throwable t) {
-                System.out.println(t);
+            public void onFailure(Call<Void> call, Throwable t) {
+
             }
         });
     }
