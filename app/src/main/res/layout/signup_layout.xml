@@ -16,7 +16,7 @@
         android:textStyle="bold" />
 
     <EditText
-        android:id="@+id/fullName"
+        android:id="@+id/firstName"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -24,7 +24,7 @@
         android:drawableLeft="@mipmap/name_black"
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
-        android:hint="@string/fullName"
+        android:hint="@string/firstName"
         android:inputType="textCapWords"
         android:padding="10dp"
         android:singleLine="true"
@@ -36,9 +36,29 @@
         android:layout_width="fill_parent"
         android:layout_height="1px"
         android:background="@color/black" />
-
     <EditText
-        android:id="@+id/userEmailId"
+        android:id="@+id/lastName"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/transparent"
+        android:drawableLeft="@mipmap/name_black"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:hint="@string/lastName"
+        android:inputType="textCapWords"
+        android:padding="10dp"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:textSize="16sp" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="@color/black" />
+    <EditText
+        android:id="@+id/userId"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -60,16 +80,16 @@
         android:background="@color/black" />
 
     <EditText
-        android:id="@+id/mobileNumber"
+        android:id="@+id/email"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:background="@android:color/transparent"
-        android:drawableLeft="@mipmap/phone_black"
+        android:drawableLeft="@mipmap/email_black"
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
-        android:hint="@string/mobileNumber"
-        android:inputType="phone"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
         android:padding="10dp"
         android:singleLine="true"
         android:textColor="@color/black"
@@ -80,6 +100,28 @@
         android:layout_width="fill_parent"
         android:layout_height="1px"
         android:background="@color/black" />
+
+    <!--<EditText-->
+        <!--android:id="@+id/mobileNumber"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="5dp"-->
+        <!--android:background="@android:color/transparent"-->
+        <!--android:drawableLeft="@mipmap/phone_black"-->
+        <!--android:drawablePadding="8dp"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:hint="@string/mobileNumber"-->
+        <!--android:inputType="phone"-->
+        <!--android:padding="10dp"-->
+        <!--android:singleLine="true"-->
+        <!--android:textColor="@color/black"-->
+        <!--android:textColorHint="@color/black"-->
+        <!--android:textSize="16sp" />-->
+
+    <!--<View-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="1px"-->
+        <!--android:background="@color/black" />-->
 
 
     <EditText

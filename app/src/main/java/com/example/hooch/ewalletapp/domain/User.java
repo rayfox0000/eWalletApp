@@ -14,6 +14,15 @@ public class User {
     private String lastName;
     private Double balance;
 
+
+    public User(String username, String password, String email, String firstName, String lastName) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
     public User(String id, String username, String password, String email, String firstName, String lastName, Double balance) {
         this.id = id;
         this.username = username;

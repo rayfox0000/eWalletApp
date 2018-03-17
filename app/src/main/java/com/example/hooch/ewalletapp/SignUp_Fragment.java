@@ -8,6 +8,7 @@ import android.content.res.ColorStateList;
 import android.content.res.XmlResourceParser;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,13 +19,20 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hooch.ewalletapp.domain.User;
+import com.example.hooch.ewalletapp.request.APIClient;
+
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class SignUp_Fragment extends Fragment implements OnClickListener {
     private static View view;
-    private static EditText fullName, emailId, mobileNumber,
-            password, confirmPassword;
+    private static EditText firstName, email,lastName, password, confirmPassword,userId;  //mobileNumber
     private static TextView login;
     private static Button signUpButton;
     private static CheckBox terms_conditions;
@@ -43,9 +51,11 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
     }
 
     private void initViews() {
-        fullName = (EditText) view.findViewById(R.id.fullName);
-        emailId = (EditText) view.findViewById(R.id.userEmailId);
-        mobileNumber = (EditText) view.findViewById(R.id.mobileNumber);
+        firstName = (EditText) view.findViewById(R.id.firstName);
+        lastName = (EditText) view.findViewById(R.id.lastName);
+        userId = (EditText) view.findViewById(R.id.userId);
+        email = (EditText) view.findViewById(R.id.email);
+//        mobileNumber = (EditText) view.findViewById(R.id.mobileNumber);
         password = (EditText) view.findViewById(R.id.password);
         confirmPassword = (EditText) view.findViewById(R.id.confirmPassword);
         signUpButton = (Button) view.findViewById(R.id.signUpBtn);
@@ -86,41 +96,76 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
 
     private void checkValidation() {
 
-        String getFullName = fullName.getText().toString();
-        String getEmailId = emailId.getText().toString();
-        String getMobileNumber = mobileNumber.getText().toString();
+        String getFirstName = firstName.getText().toString();
+        String getLastName = lastName.getText().toString();
+        String getEmail = email.getText().toString();
+//        String getMobileNumber = mobileNumber.getText().toString();
         String getPassword = password.getText().toString();
         String getConfirmPassword = confirmPassword.getText().toString();
+        String getUserId = userId.getText().toString();
 
         Pattern p = Pattern.compile(Utils.regEx);
-        Matcher m = p.matcher(getEmailId);
+        Matcher m = p.matcher(getEmail);
 
-        if (getFullName.equals("") || getFullName.length() == 0
-                || getEmailId.equals("") || getEmailId.length() == 0
-                || getMobileNumber.equals("") || getMobileNumber.length() == 0
+        if (getFirstName.equals("") || getFirstName.length() == 0 || getLastName.equals("")|| getLastName.length() == 0
+                || getUserId.equals("") || getUserId.length() ==0
+                || getEmail.equals("") || getEmail.length() == 0
+//                || getMobileNumber.equals("") || getMobileNumber.length() == 0
                 || getPassword.equals("") || getPassword.length() == 0
                 || getConfirmPassword.equals("")
                 || getConfirmPassword.length() == 0)
 
             new CustomToast().Show_Toast(getActivity(), view,
                     "All fields are required.");
+        else {
+            signUp(getFirstName,getLastName,getEmail,getPassword,getUserId); //getMobileNumber
+        }
 
-        else if (!m.find())
-            new CustomToast().Show_Toast(getActivity(), view,
-                    "Your Email Id is Invalid.");
+//        else if (!m.find())
+//            new CustomToast().Show_Toast(getActivity(), view,
+//                    "Your Email Id is Invalid.");
+//
+//        else if (!getConfirmPassword.equals(getPassword))
+//            new CustomToast().Show_Toast(getActivity(), view,
+//                    "Both password doesn't match.");
+//
+//        else if (!terms_conditions.isChecked())
+//            new CustomToast().Show_Toast(getActivity(), view,
+//                    "Please select Terms and Conditions.");
+//
+//        else
+//            Toast.makeText(getActivity(), "Do SignUp.", Toast.LENGTH_SHORT)
+//                    .show();
 
-        else if (!getConfirmPassword.equals(getPassword))
-            new CustomToast().Show_Toast(getActivity(), view,
-                    "Both password doesn't match.");
+    }
 
-        else if (!terms_conditions.isChecked())
-            new CustomToast().Show_Toast(getActivity(), view,
-                    "Please select Terms and Conditions.");
-
-        else
-            Toast.makeText(getActivity(), "Do SignUp.", Toast.LENGTH_SHORT)
+    //getMobileNumber
+    private void signUp(String getFirstName, String getLastName, String getEmail, String getPassword,String getUserId){
+        User user = new User(getUserId,getPassword,getEmail,getFirstName,getLastName);
+//        Call<String> signUp = APIClient.userRequests.signUp(new User(getUserId,getPassword,getEmail,getFirstName,getLastName));
+//        Log.d("TST",getUserId + getPassword + getEmail + getFirstName + getLastName);
+        Call signUp = APIClient.userRequests.signUp(user);
+//        Log.d("TEST","test");
+        signUp.enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                if(response.isSuccessful()){
+                    Toast.makeText(getActivity(), "Please verify your account.", Toast.LENGTH_SHORT)
                     .show();
+                }else{
+                    try {
+                        Utils.customToast(getActivity(), view, response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
 
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                System.out.println(t);
+            }
+        });
     }
 }
 
