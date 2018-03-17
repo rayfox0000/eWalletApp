@@ -14,6 +14,8 @@ public class User {
     private String lastName;
     private Double balance;
 
+    public User() {
+    }
 
     public User(String username, String password, String email, String firstName, String lastName) {
         this.username = username;
@@ -75,6 +77,10 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getFullName() {
+        return this.firstName + " " + this.lastName;
     }
 
     @Override

@@ -51,7 +51,8 @@ public class MenuActivity extends AppCompatActivity {
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction().replace(R.id.fragment_container, new Home_Fragment()).commit();
         }else if (a == 2){
-
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.fragment_container, new QRFragment()).commit();
         }else if(a ==3){
             FragmentManager manager = getSupportFragmentManager();
            manager.beginTransaction().replace(R.id.fragment_container, new Profile_Fragment()).commit();

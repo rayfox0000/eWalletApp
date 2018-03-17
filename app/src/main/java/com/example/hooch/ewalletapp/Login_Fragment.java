@@ -29,6 +29,7 @@ import android.widget.TextView;
 
 import com.example.hooch.ewalletapp.domain.LoginResponse;
 import com.example.hooch.ewalletapp.request.APIClient;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 
@@ -171,7 +172,10 @@ public class Login_Fragment extends Fragment implements OnClickListener {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful()) {
-                    //TODO: Store token and user details into Shared Pref
+                    SharedPrefManager.save(SharedPrefManager.CURRENT_USER, new Gson().toJson(response.body().getUser()));
+                    CurrentUser.setCurrentUser(response.body().getUser());
+                    SharedPrefManager.save(SharedPrefManager.JWT, "BEARER " + response.body().getToken());
+                    CurrentUser.setToken("BEARER " + response.body().getToken());
                     enterMain();
                 } else {
                     try {
@@ -190,6 +194,8 @@ public class Login_Fragment extends Fragment implements OnClickListener {
 
     private void enterMain() {
         Intent mainIntent = new Intent(getActivity(), MenuActivity.class);
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(mainIntent);
+        getActivity().finish();
     }
 }
